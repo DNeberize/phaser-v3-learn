@@ -5,6 +5,18 @@ import { v4 as uuidv4 } from 'uuid';
 export const BALL_IMAGES = ['lemon', 'cherry', 'banana', 'melon', 'orange', 'grape', 'plum', 'star'] as const;
 export type BallImageType = typeof BALL_IMAGES[number];
 
+// Bonus applied when a ball lands on a multiplier showing the same fruit
+export const FRUIT_BONUS_MULTIPLIERS: Record<BallImageType, number> = {
+    cherry: 2,
+    banana: 4,
+    lemon: 2,
+    melon: 10,
+    orange: 2,
+    grape: 10,
+    plum: 4,
+    star: 10,
+};
+
 export function getRandomBallImage(): BallImageType {
     return BALL_IMAGES[Math.floor(Math.random() * BALL_IMAGES.length)];
 }
@@ -69,6 +81,7 @@ export default function plinkoDropBall({ objects, this: scene, ballPath, ballIma
 
     ball.setData('id', uuidv4());
     ball.setData('path', ballPath);
+    ball.setData('fruit', ballImage);
     ball.setData('currentRow', 0);
 
     ball.setVelocity(0, 0);

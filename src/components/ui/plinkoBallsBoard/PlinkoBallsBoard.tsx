@@ -1,47 +1,17 @@
+import {
+    type BallImageType,
+    FRUIT_BONUS_MULTIPLIERS
+} from "../../games/plinko/scenes/gameScene/components/plinkoDropBall.ts";
+
+const BOARD_ORDER: BallImageType[] = ['cherry', 'banana', 'lemon', 'melon', 'orange', 'grape', 'plum', 'star'];
+
 
 function PlinkoBallsBoard() {
-    const plinkoBallsList = [
-        {
-            img: '/plinkoGameAssets/plinkoCherry.png',
-            multiplier: 2,
-            alt: 'Plinko Cherry',
-        },
-        {
-            img: '/plinkoGameAssets/plinkoBanana.png',
-            multiplier: 4,
-            alt: 'Plinko Banana',
-        },
-        {
-            img: '/plinkoGameAssets/plinkoLemon.png',
-            multiplier: 2,
-            alt: 'Plinko Lemon',
-        },
-        {
-            img: '/plinkoGameAssets/plinkoMelon.png',
-            multiplier: 10,
-            alt: 'Plinko Melon',
-        },
-        {
-            img: '/plinkoGameAssets/plinkoOrange.png',
-            multiplier: 2,
-            alt: 'Plinko Orange',
-        },
-        {
-            img: '/plinkoGameAssets/plinkoGrape.png',
-            multiplier: 10,
-            alt: 'Plinko Grape',
-        },
-        {
-            img: '/plinkoGameAssets/plinkoPlum.png',
-            multiplier: 4,
-            alt: 'Plinko Plum',
-        },
-        {
-            img: '/plinkoGameAssets/plinkoStar.png',
-            multiplier: 10,
-            alt: 'Plinko Star',
-        },
-    ]
+    const plinkoBallsList = BOARD_ORDER.map(fruit => ({
+        img: `/plinkoGameAssets/plinko${fruit[0].toUpperCase()}${fruit.slice(1)}.png`,
+        multiplier: FRUIT_BONUS_MULTIPLIERS[fruit],
+        alt: `Plinko ${fruit[0].toUpperCase()}${fruit.slice(1)}`,
+    }))
     return (
         <div
             className={`md:mt-[17px] bg-[#0f002ab2] p-[5.53px] md:p-3 border border-solid border-[#ffffff1a] rounded-[13.05px] md:rounded-3xl w-[63.08px] md:w-[118px] h-full max-h-[137.53px] md:max-h-[248px] grid grid-cols-2 gap-[2px] backdrop-blur-[8px] md:gap-1 `}>

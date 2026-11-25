@@ -3,6 +3,9 @@ import {gameEvents} from "../../../../../../utils/gameEvents.ts";
 import type {PlinkoHistoryItemType} from "../../../../../../utils/types/Plinko.type.ts";
 import dayjs from "dayjs";
 import {GameEventsEnum} from "../../../../../../utils/enums/gameEvents.enum.ts";
+import {type BallImageType, FRUIT_BONUS_MULTIPLIERS} from "./plinkoDropBall.ts";
+
+const TOTAL_BET = 2;
 
 interface Props {
     ball: Phaser.Physics.Matter.Image,
@@ -55,13 +58,21 @@ export default function plinkoHandleBallMultiplierHit({
         }
     });
 
-    const multiplierVal = multiplier.getData('value')
-    gameEvents.emit(GameEventsEnum.BALL_DROPPED,{
+    const baseMultiplier: number = multiplier.getData('value');
+    const ballFruit: BallImageType | undefined = ball.getData('fruit');
+    const isBonus = !!ballFruit && ballFruit === multiplier.getData('fruit');
+    const payout = isBonus
+        ? Math.round(baseMultiplier * FRUIT_BONUS_MULTIPLIERS[ballFruit] * 100) / 100
+        : baseMultiplier;
+
+    gameEvents.emit(GameEventsEnum.BALL_DROPPED, {
         id: ball.getData('id'),
         time: dayjs().format('HH:mm:ss'),
-        payout: multiplierVal,
-        totalBet: 2,
-        profit: multiplierVal * 2,
+        payout,
+        baseMultiplier,
+        bonusFruit: isBonus ? ballFruit : undefined,
+        totalBet: TOTAL_BET,
+        profit: payout * TOTAL_BET,
         createdAt: Date.now(),
     } as PlinkoHistoryItemType);
 

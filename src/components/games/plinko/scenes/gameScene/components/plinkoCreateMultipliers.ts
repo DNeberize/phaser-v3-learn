@@ -1,5 +1,25 @@
 import type {PlinkoGameObjectsType} from "../PlinkoGameScene.ts";
 import {VIRTUAL_WIDTH} from "../PlinkoGameScene.ts";
+import type {BallImageType} from "./plinkoDropBall.ts";
+
+// Matches the frames in plinkoMultipliers.png, left to right
+export const MULTIPLIER_FRAMES: { value: number; fruit: BallImageType }[] = [
+    {value: 18, fruit: 'star'},
+    {value: 3.2, fruit: 'grape'},
+    {value: 1.6, fruit: 'melon'},
+    {value: 1.3, fruit: 'banana'},
+    {value: 1.2, fruit: 'plum'},
+    {value: 1.1, fruit: 'lemon'},
+    {value: 1, fruit: 'orange'},
+    {value: 0.5, fruit: 'cherry'},
+    {value: 1, fruit: 'orange'},
+    {value: 1.1, fruit: 'lemon'},
+    {value: 1.2, fruit: 'plum'},
+    {value: 1.3, fruit: 'banana'},
+    {value: 1.6, fruit: 'melon'},
+    {value: 3.2, fruit: 'grape'},
+    {value: 18, fruit: 'star'},
+];
 
 interface Props {
     this: Phaser.Scene & {
@@ -67,7 +87,8 @@ export function plinkoCreateMultipliers({ this: scene, objects, rows }: Props): 
         });
         sensor.gameObject = multiplier;
         multiplier.setData('sensor', sensor);
-        multiplier.setData('value', i);
+        multiplier.setData('value', MULTIPLIER_FRAMES[i]?.value ?? 0);
+        multiplier.setData('fruit', MULTIPLIER_FRAMES[i]?.fruit);
 
         objects.multipliers.push(multiplier);
     }

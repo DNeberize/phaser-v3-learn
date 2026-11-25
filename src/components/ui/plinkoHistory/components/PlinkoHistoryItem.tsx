@@ -10,7 +10,7 @@ interface Props {
     toBeRemoved: boolean;
 }
 
-function PlinkoHistoryItem({data: {payout, time, totalBet, profit}, handleRemove, toBeRemoved}: Props) {
+function PlinkoHistoryItem({data: {payout, time, totalBet, profit, bonusFruit, baseMultiplier}, handleRemove, toBeRemoved}: Props) {
     const [expanded, setExpanded] = useState<boolean>(false)
     const ref = useRef<HTMLDivElement>(null);
 
@@ -46,9 +46,27 @@ function PlinkoHistoryItem({data: {payout, time, totalBet, profit}, handleRemove
                 <p className={`${paragraphClass}`}>
                     {totalBet.toPrecision(3)} USD
                 </p>
-                <p className={`${paragraphClass}`}>
-                    {payout} x
-                </p>
+                {bonusFruit ? (
+                    <div className={'flex items-center gap-[6px]'}
+                         title={`${bonusFruit} bonus: ${baseMultiplier}x → ${payout}x`}>
+                        <div className={'bonus-fruit'}>
+                            <img
+                                src={`/plinkoGameAssets/plinko${bonusFruit[0].toUpperCase()}${bonusFruit.slice(1)}.png`}
+                                alt={`${bonusFruit} bonus`} width={24} height={24}/>
+                            <span className={'bonus-sparkle'}>✦</span>
+                            <span className={'bonus-sparkle'}>✦</span>
+                            <span className={'bonus-sparkle'}>✦</span>
+                        </div>
+                        <div className={'flex flex-col'}>
+                            <span className={'bonus-old'}>{baseMultiplier}x</span>
+                            <span className={'bonus-new'}>{payout}x</span>
+                        </div>
+                    </div>
+                ) : (
+                    <p className={`${paragraphClass}`}>
+                        {payout} x
+                    </p>
+                )}
                 <button type={'button'} className={`relative h-[33px] flex items-center justify-center`}>
                     <div className={'absolute lg:hidden w-full h-full rounded-xl'}
                     style={{
